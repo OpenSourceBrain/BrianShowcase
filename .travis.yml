@@ -14,6 +14,7 @@ script:
     - ls -alt Brian/results
     - conda info
     - source activate /home/travis/conda_libs
+    - conda list -p /home/travis/conda_libs
     - python -c "import scipy"
     - python -c "import brian"
     
