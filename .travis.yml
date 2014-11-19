@@ -12,6 +12,7 @@ script:
     - pwd
     - ls -alt
     - ls -alt Brian/results
+    - conda info
     
     
     
