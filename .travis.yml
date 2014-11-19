@@ -13,6 +13,8 @@ script:
     - ls -alt
     - ls -alt Brian/results
     - conda info
+    - python -c "import scipy"
+    - python -c "import brian"
     
     
     
