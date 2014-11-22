@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/OpenSourceBrain/BrianShowcase.svg?branch=master)](https://travis-ci.org/OpenSourceBrain/BrianShowcase)
+----------------------------------------------------------------------------------------------
+
 Brian Showcase
 ==============
 
