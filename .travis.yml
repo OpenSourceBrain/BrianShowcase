@@ -4,19 +4,17 @@ python: 2.7
 env:
     - OMV_ENGINE=Brian
 
+virtualenv:
+    system_site_packages: true
+
+before_install:
+    - sudo apt-get install -qq python-numpy python-scipy
+
 install: 
     - pip install git+https://github.com/OpenSourceBrain/osb-model-validation
 
 script:
     - omv all -V
-    - pwd
-    - ls -alt
-    - ls -alt Brian/results
-    - conda info
-    - source activate /home/travis/conda_libs
-    - conda list -p /home/travis/conda_libs
-    - python -c "import scipy"
-    - python -c "import brian"
     
     
     
