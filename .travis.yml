@@ -3,6 +3,7 @@ python: 2.7
 
 env:
     - OMV_ENGINE=Brian
+    - OMV_ENGINE=Brian2
 
 virtualenv:
     system_site_packages: true

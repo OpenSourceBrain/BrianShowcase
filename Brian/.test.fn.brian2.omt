@@ -1,0 +1,5 @@
+# Script for running automated tests on OSB using Travis-CI, see https://github.com/OpenSourceBrain/osb-model-validation
+# Still in development, subject to change without notice!!
+
+target: LEMS_NML2_Ex9_FN_brian2.py 
+engine: Brian2
