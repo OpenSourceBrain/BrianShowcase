@@ -46,6 +46,7 @@ if show_gui:
 # Saving to file: results/ex9.dat, reference: of1
 record_of1__V = StateMonitor(fnPop1,'V',record=[0]) # V (Type: OutputColumn)
 record_of1__W = StateMonitor(fnPop1,'W',record=[0]) # W (Type: OutputColumn)
+print("Running simulation for 200s (dt = 0.05s)")
 
 defaultclock.dt = 0.05*second
 run(200*second)
