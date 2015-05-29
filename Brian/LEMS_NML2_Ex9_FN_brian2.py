@@ -13,7 +13,7 @@ Components:
          org.neuroml.model   v1.4.2
          jLEMS               v0.9.7.3
 '''
-from brian import *
+from brian2 import *
 
 from math import *
 import sys
@@ -51,7 +51,7 @@ defaultclock.dt = 0.05*second
 run(200*second)
 
 # Saving to file: results/ex9.dat, reference: of1
-all_of1 = np.array( [ record_of1__V.times, record_of1__V[0] , record_of1__W[0]  ] )
+all_of1 = np.array( [ record_of1__V.t, record_of1__V.V[0] , record_of1__W.W[0]  ] )
 all_of1 = all_of1.transpose()
 file_of1 = open("results/ex9.dat", 'w')
 for l in all_of1:
@@ -68,9 +68,9 @@ if show_gui:
     # Display: Component(id=d1 type=Display)
     display_d1 = plt.figure("Ex9: FitzHugh-Nagumo cell model in LEMS")
     plot_V = display_d1.add_subplot(111, autoscale_on=True)
-    plot_V.plot(trace_d1__V.times/second,trace_d1__V[0], color="#ee40FF", label="V")
+    plot_V.plot(trace_d1__V.t/second,trace_d1__V.V[0], color="#ee40FF", label="V")
     plot_V.legend()
     plot_W = display_d1.add_subplot(111, autoscale_on=True)
-    plot_W.plot(trace_d1__W.times/second,trace_d1__W[0], color="#BBA0AA", label="W")
+    plot_W.plot(trace_d1__W.t/second,trace_d1__W.W[0], color="#BBA0AA", label="W")
     plot_W.legend()
     plt.show()
