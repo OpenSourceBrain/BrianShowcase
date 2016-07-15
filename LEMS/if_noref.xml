@@ -34,21 +34,22 @@
 
     <ComponentType name="lifneurons">
         <Parameter dimension="none" name="n"/>
-        <Parameter dimension="time" name="tau_p"/>
+        <Parameter dimension="time" name="tau_min"/>
+        <Parameter dimension="time" name="tau_max"/>
         <Parameter dimension="voltage" name="vrest_p"/>
         <Structure>
             <MultiInstantiate componentType="neuron1" number="n">
                 <Assign property="v0"
                         value="-60*const_mV + 10*const_mV * index / (n-1)"/>
                 <Assign property="tau" 
-                        value="tau_p"/>
+                        value="tau_min + (tau_max-tau_min) * random(1)"/>
                 <Assign property="vrest" 
                         value="vrest_p"/>
             </MultiInstantiate>
         </Structure>
     </ComponentType>
 
-    <lifneurons id="nrns" n="5" tau_p="10. ms" vrest_p="-70mV"/>
+    <lifneurons id="nrns" n="5" tau_max="20 ms" tau_min="10 ms" vrest_p="-70mV"/>
   
 
     <Simulation id="sim1" length=".1s" step="0.01ms" target="nrns">
