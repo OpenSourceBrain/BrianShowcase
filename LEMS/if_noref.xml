@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<Lems xmlns="http://www.neuroml.org/lems/0.7.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/lems/0.7.3 https://raw.githubusercontent.com/LEMS/LEMS/development/Schemas/LEMS/LEMS_v0.7.3.xsd">
+    <Include file="NeuroML2CoreTypes.xml"/>
+    <Include file="Simulation.xml"/>
+
+
+    <ComponentType name="neuron1">
+        
+        <Constant dimension="voltage" name="const_mV" value="1mV"/>
+        
+        <Property dimension="voltage" name="v0"/>
+        <Property dimension="voltage" name="vrest"/>
+        
+        <Property dimension="time" name="tau"/>
+        
+        <EventPort direction="out" name="spike"/>
+        <Exposure dimension="voltage" name="v"/>
+        
+        <Dynamics>
+            <StateVariable dimension="voltage" exposure="v" name="v"/>
+            <TimeDerivative value="(vrest - v) / tau" variable="v"/>
+            <OnStart>
+                <StateAssignment variable="v" value="v0" />
+            </OnStart>
+            <OnCondition test="v .gt. (10 * const_mV)">
+                <EventOut port="spike"/>
+                <StateAssignment value="0*const_mV" variable="v"/>
+            </OnCondition>
+        </Dynamics>
+        
+    </ComponentType>
+    
+    <Component id="n1" n="100" tau="10. ms" type="neuron1"/>
+
+    <ComponentType name="lifneurons">
+        <Parameter dimension="none" name="n"/>
+        <Parameter dimension="time" name="tau_p"/>
+        <Parameter dimension="voltage" name="vrest_p"/>
+        <Structure>
+            <MultiInstantiate componentType="neuron1" number="n">
+                <Assign property="v0"
+                        value="-60*const_mV + 10*const_mV * index / (n-1)"/>
+                <Assign property="tau" 
+                        value="tau_p"/>
+                <Assign property="vrest" 
+                        value="vrest_p"/>
+            </MultiInstantiate>
+        </Structure>
+    </ComponentType>
+
+    <lifneurons id="nrns" n="5" tau_p="10. ms" vrest_p="-70mV"/>
+  
+
+    <Simulation id="sim1" length=".1s" step="0.01ms" target="nrns">
+        <Display id="d0" title="example trace" timeScale="1ms" xmin="0" xmax="100" ymin="-70" ymax="-30">
+            <Line id="v 0" quantity="[0]/v" scale="1mV" timeScale="1ms" color="#ff3300"/>
+            <Line id="v 1" quantity="[1]/v" scale="1mV" timeScale="1ms" color="#ff6600"/>
+            <Line id="v 2" quantity="[2]/v" scale="1mV" timeScale="1ms" color="#ff9900"/>
+            <Line id="v 3" quantity="[3]/v" scale="1mV" timeScale="1ms" color="#ffcc00"/>
+            <Line id="v 4" quantity="[4]/v" scale="1mV" timeScale="1ms" color="#ffff00"/>
+        </Display>
+    </Simulation>
+    <Target component="sim1" />
+
+</Lems>
