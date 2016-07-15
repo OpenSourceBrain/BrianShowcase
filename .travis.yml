@@ -1,15 +1,26 @@
-language: python
-python: 2.7
+sudo: false
 
-env:
-    - OMV_ENGINE=Brian
-    - OMV_ENGINE=Brian2
+addons:
+  apt:
+    packages:
+       # Requirements for Brian
+    - python-numpy 
+    - python-scipy 
+    - python-matplotlib 
+    - python-sympy
+    
+    
+language: python
+
+python: 2.7
 
 virtualenv:
     system_site_packages: true
 
-before_install:
-    - sudo apt-get install -qq python-numpy python-scipy python-matplotlib python-sympy python-markupsafe
+
+env:
+    - OMV_ENGINE=Brian
+    - OMV_ENGINE=Brian2
 
 install: 
     - pip install git+https://github.com/OpenSourceBrain/osb-model-validation
