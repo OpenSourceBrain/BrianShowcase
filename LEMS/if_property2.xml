@@ -10,10 +10,13 @@
       
         <Property dimension="voltage" name="v0"/>
         <Property dimension="time" name="tau"/>
+        <Property dimension="capacitance" name="C"/>
     
         <!--  Not required if baseCellMembPot
         <EventPort direction="out" name="spike"/>
         <Exposure dimension="voltage" name="v"/>  -->
+        
+        <Attachments name="synapses" type="basePointCurrent"/>
     
         <Dynamics>
         
@@ -22,6 +25,8 @@
             <OnStart>
                 <StateAssignment value="0" variable="v"/>
             </OnStart>
+            
+            <DerivedVariable name="iSyn"  dimension="current" select="synapses[*]/i" reduce="add" />
      
             <Regime name="refractory">
                 <StateVariable dimension="time" name="lastspike"/>
@@ -34,7 +39,7 @@
             </Regime>
       
             <Regime initial="true" name="integrating">
-                <TimeDerivative value="(v0 - v) / tau" variable="v"/>
+                <TimeDerivative value="((v0 - v) / tau) + (iSyn/C)" variable="v"/>
                 <OnCondition test="v .gt. (10 * mV)">
                     <EventOut port="spike"/>
                     <StateAssignment value="0*mV" variable="v"/>
@@ -47,10 +52,37 @@
   
   
 
+    <ComponentType name="testSynapse"
+                   extends="baseCurrentBasedSynapse"
+                   description="...">
+
+        <Property name="weight" dimension="none" defaultValue="1"/>
+        <Parameter name="tau" dimension="time" description="Time course for rise and decay"/>
+        <Parameter name="ibase" dimension="current" description="Baseline current increase after receiving a spike"/>
+
+        <Dynamics>
+            
+            <StateVariable name="i" dimension="current"/>
+
+            <TimeDerivative variable="i" value="-1* (i)/tau" />
+
+            <OnStart>
+                <StateAssignment variable="i" value="0" />
+            </OnStart>
+
+            <OnEvent port="in">
+                <StateAssignment variable="i" value="weight * ibase" />
+            </OnEvent>
+            
+        </Dynamics>
+    </ComponentType>
+    
+
     <ComponentType name="lifneurons" extends="basePopulation">
         <Constant name="MV" symbol="MV" dimension="voltage" value="1 mV"/>
         <Parameter dimension="none" name="n"/>
         <Parameter dimension="time" name="tau_p"/>
+        <Parameter dimension="capacitance" name="C_p"/>
         
         <!-- Required for basePopulation but not used -->
         <ComponentReference name="component" type="baseCell"/>
@@ -59,37 +91,49 @@
             <MultiInstantiate componentType="neuron1" number="n">
                 <Assign property="v0" value="20*MV * index / (n-1)"/>
                 <Assign property="tau" value="tau_p"/>
+                <Assign property="C" value="C_p"/>
             </MultiInstantiate>
         </Structure>
     </ComponentType>
  
   
+    <testSynapse id="synapse1" tau="5ms" ibase="1pA"/>
   
     <network id="net1">
-        <lifneurons id="lifPop" n="7" tau_p="10. ms"/>
+        <lifneurons id="lifPopPre" n="6" tau_p="10. ms" C_p="3pF"/>
+        <lifneurons id="lifPopPost" n="6" tau_p="10. ms" C_p="3pF"/>
+        
+        <projection id="proj0" presynapticPopulation="lifPopPre" postsynapticPopulation="lifPopPost" synapse="synapse1">
+            <connection id="0" preCellId="../lifPopPre[4]" postCellId="../lifPopPost[0]"/>
+            <connection id="1" preCellId="../lifPopPre[5]" postCellId="../lifPopPost[1]"/>
+        </projection>
     </network>
   
 
     <Simulation id="sim1" length=".5s" step="0.01ms" target="net1">
       
-        <Display id="d0" title="example trace" timeScale="1ms" xmin="-50" xmax="550" ymin="-1" ymax="11">
-            <Line id="exampleVoltage5" quantity="lifPop[5]/v" scale="1mV" timeScale="1ms" color="#882228"/>
-            <Line id="exampleVoltage6" quantity="lifPop[6]/v" scale="1mV" timeScale="1ms" color="#000028"/>
+        <Display id="d0" title="PrePop" timeScale="1ms" xmin="-50" xmax="550" ymin="-1" ymax="11">
+            <Line id="PrePop4" quantity="lifPopPre[4]/v" scale="1mV" timeScale="1ms" color="#882228"/>
+            <Line id="PrePop5" quantity="lifPopPre[5]/v" scale="1mV" timeScale="1ms" color="#000028"/>
+        </Display>
+        
+        <Display id="d1" title="PostPop" timeScale="1ms" xmin="-50" xmax="550" ymin="-1" ymax="11">
+            <Line id="PostPop0" quantity="lifPopPost[0]/v" scale="1mV" timeScale="1ms" color="#882228"/>
+            <Line id="PostPop1" quantity="lifPopPost[1]/v" scale="1mV" timeScale="1ms" color="#000028"/>
         </Display>
 
-        <OutputFile id="spikes" fileName="record_property.dat">
-            <OutputColumn id="i0" quantity="lifPop[5]/v" />
-            <OutputColumn id="i1" quantity="lifPop[6]/v" />
+        <OutputFile id="traces" fileName="record_property.dat">
+            <OutputColumn id="i0" quantity="lifPopPre[4]/v" />
+            <OutputColumn id="i1" quantity="lifPopPre[5]/v" />
         </OutputFile>
 
         <EventOutputFile id="iaf_spikes" fileName="record_property.spikes" format="TIME_ID">
-            <EventSelection id="0" select="lifPop[0]" eventPort="spike"/>
-            <EventSelection id="1" select="lifPop[1]" eventPort="spike"/>
-            <EventSelection id="2" select="lifPop[2]" eventPort="spike"/>
-            <EventSelection id="3" select="lifPop[3]" eventPort="spike"/>
-            <EventSelection id="4" select="lifPop[4]" eventPort="spike"/>
-            <EventSelection id="5" select="lifPop[5]" eventPort="spike"/>
-            <EventSelection id="6" select="lifPop[6]" eventPort="spike"/>
+            <EventSelection id="0" select="lifPopPre[0]" eventPort="spike"/>
+            <EventSelection id="1" select="lifPopPre[1]" eventPort="spike"/>
+            <EventSelection id="2" select="lifPopPre[2]" eventPort="spike"/>
+            <EventSelection id="3" select="lifPopPre[3]" eventPort="spike"/>
+            <EventSelection id="4" select="lifPopPre[4]" eventPort="spike"/>
+            <EventSelection id="5" select="lifPopPre[5]" eventPort="spike"/>
         </EventOutputFile>
 
     </Simulation>
