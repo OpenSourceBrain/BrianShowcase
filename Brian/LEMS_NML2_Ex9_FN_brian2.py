@@ -17,6 +17,7 @@ from brian2 import *
 
 from math import *
 import sys
+import numpy as np
 
 
 if len(sys.argv) > 1 and sys.argv[1] == '-nogui':
