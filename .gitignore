@@ -3,3 +3,8 @@
 Brian/results/*
 *~
 Brian/*.dat
+/NeuroML2/*brian*py
+/NeuroML2/*_nrn.py
+/NeuroML2/*.mod
+/NeuroML2/x86_64
+/NeuroML2/*.dat
