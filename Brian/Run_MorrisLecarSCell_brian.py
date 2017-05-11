@@ -13,7 +13,7 @@ Components:
          org.neuroml.model   v1.5.1
          jLEMS               v0.9.8.8
 '''
-from brian2 import *
+from brian import *
 
 from math import *
 import sys
@@ -90,7 +90,7 @@ defaultclock.dt = 0.005*msecond
 run(220*msecond)
 
 # Saving to file: ML_S.dat, reference: PlotV
-all_PlotV = np.array( [ record_PlotV__V.t, record_PlotV__V.V[0]  ] )
+all_PlotV = np.array( [ record_PlotV__V.times, record_PlotV__V[0]  ] )
 all_PlotV = all_PlotV.transpose()
 file_PlotV = open("ML_S.dat", 'w')
 for l in all_PlotV:
@@ -107,36 +107,36 @@ if show_gui:
     # Display: Component(id=d1 type=Display)
     display_d1 = plt.figure("Fig 6 from Morris and Lecar 1981: membrane potential")
     plot_V = display_d1.add_subplot(111, autoscale_on=True)
-    plot_V.plot(trace_d1__V.t/second,trace_d1__V.V[0], color="#000000", label="V")
+    plot_V.plot(trace_d1__V.times/second,trace_d1__V[0], color="#000000", label="V")
     plot_V.legend()
 
     # Display: Component(id=d2 type=Display)
     display_d2 = plt.figure("Currents: IL, IK and ICa")
     plot_IL = display_d2.add_subplot(111, autoscale_on=True)
-    plot_IL.plot(trace_d2__IL.t/second,trace_d2__IL.IL[0], color="#000FFF", label="IL")
+    plot_IL.plot(trace_d2__IL.times/second,trace_d2__IL[0], color="#000FFF", label="IL")
     plot_IL.legend()
     plot_IK = display_d2.add_subplot(111, autoscale_on=True)
-    plot_IK.plot(trace_d2__IK.t/second,trace_d2__IK.IK[0], color="#FF22FF", label="IK")
+    plot_IK.plot(trace_d2__IK.times/second,trace_d2__IK[0], color="#FF22FF", label="IK")
     plot_IK.legend()
     plot_ICa = display_d2.add_subplot(111, autoscale_on=True)
-    plot_ICa.plot(trace_d2__ICa.t/second,trace_d2__ICa.ICa[0], color="#FF0000", label="ICa")
+    plot_ICa.plot(trace_d2__ICa.times/second,trace_d2__ICa[0], color="#FF0000", label="ICa")
     plot_ICa.legend()
 
     # Display: Component(id=d3 type=Display)
     display_d3 = plt.figure("W and W, M steady state values value")
     plot_W = display_d3.add_subplot(111, autoscale_on=True)
-    plot_W.plot(trace_d3__W.t/second,trace_d3__W.W[0], color="#4444FF", label="W")
+    plot_W.plot(trace_d3__W.times/second,trace_d3__W[0], color="#4444FF", label="W")
     plot_W.legend()
     plot_Wss = display_d3.add_subplot(111, autoscale_on=True)
-    plot_Wss.plot(trace_d3__Wss.t/second,trace_d3__Wss.Wss[0], color="#000000", label="Wss")
+    plot_Wss.plot(trace_d3__Wss.times/second,trace_d3__Wss[0], color="#000000", label="Wss")
     plot_Wss.legend()
     plot_Mss = display_d3.add_subplot(111, autoscale_on=True)
-    plot_Mss.plot(trace_d3__Mss.t/second,trace_d3__Mss.Mss[0], color="#ff9966", label="Mss")
+    plot_Mss.plot(trace_d3__Mss.times/second,trace_d3__Mss[0], color="#ff9966", label="Mss")
     plot_Mss.legend()
 
     # Display: Component(id=d4 type=Display)
     display_d4 = plt.figure("Time course of W")
     plot_Tw = display_d4.add_subplot(111, autoscale_on=True)
-    plot_Tw.plot(trace_d4__Tw.t/second,trace_d4__Tw.Tw[0], color="#000000", label="Tw")
+    plot_Tw.plot(trace_d4__Tw.times/second,trace_d4__Tw[0], color="#000000", label="Tw")
     plot_Tw.legend()
     plt.show()
