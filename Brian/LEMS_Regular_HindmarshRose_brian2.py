@@ -27,6 +27,11 @@ else:
     show_gui = True
 
 # Adding simulation Component(id=sim1 type=Simulation) of network: net1 (Type: network)
+
+defaultclock.dt = 5.0*msecond
+duration = 2000000.0*msecond
+steps = int(duration/defaultclock.dt)
+
 #    Population hr_regular_pop contains components of: Component(id=hr_regular type=hindmarshRoseCell) 
 
 hr_regular_eqs=Equations('''
@@ -77,10 +82,9 @@ if show_gui:
 record_of0__x = StateMonitor(hr_regular_pop,'x',record=[0]) # x (Type: OutputColumn)
 record_of0__y = StateMonitor(hr_regular_pop,'y',record=[0]) # y (Type: OutputColumn)
 record_of0__z = StateMonitor(hr_regular_pop,'z',record=[0]) # z (Type: OutputColumn)
-print("Running simulation for 2000s (dt = 0.005s)")
 
-defaultclock.dt = 0.005*second
-run(2000*second)
+print("Running simulation for %s (dt = %s, # steps = %s)"%(duration,defaultclock.dt, steps))
+run(duration)
 
 # Saving to file: hr.dat, reference: of0
 all_of0 = np.array( [ record_of0__x.t, record_of0__x.x[0] , record_of0__y.y[0] , record_of0__z.z[0]  ] )

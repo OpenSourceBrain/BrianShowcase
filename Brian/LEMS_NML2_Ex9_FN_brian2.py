@@ -27,6 +27,11 @@ else:
     show_gui = True
 
 # Adding simulation Component(id=sim1 type=Simulation) of network: net1 (Type: network)
+
+defaultclock.dt = 10.0*msecond
+duration = 200000.0*msecond
+steps = int(duration/defaultclock.dt)
+
 #    Population fnPop1 contains components of: Component(id=fn1 type=fitzHughNagumoCell) 
 
 fn1_eqs=Equations('''
@@ -51,10 +56,9 @@ if show_gui:
 # Saving to file: results/ex9.dat, reference: of1
 record_of1__V = StateMonitor(fnPop1,'V',record=[0]) # V (Type: OutputColumn)
 record_of1__W = StateMonitor(fnPop1,'W',record=[0]) # W (Type: OutputColumn)
-print("Running simulation for 200s (dt = 0.01s)")
 
-defaultclock.dt = 0.01*second
-run(200*second)
+print("Running simulation for %s (dt = %s, # steps = %s)"%(duration,defaultclock.dt, steps))
+run(duration)
 
 # Saving to file: results/ex9.dat, reference: of1
 all_of1 = np.array( [ record_of1__V.t, record_of1__V.V[0] , record_of1__W.W[0]  ] )
