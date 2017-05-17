@@ -7,4 +7,6 @@ jnml ~/NeuroML2/LEMSexamples/LEMS_NML2_Ex9_FN.xml -brian2
 cp ~/NeuroML2/LEMSexamples/LEMS_NML2_Ex9_FN_brian*.py .
 
 jnml ../NeuroML2/LEMS_2007One.xml -brian2
-cp ../NeuroML2/LEMS_2007One_brian2*py .
+jnml ../NeuroML2/LEMS_FiveCells.xml -brian2
+
+cp ../NeuroML2/LEMS_*_brian2*py .
