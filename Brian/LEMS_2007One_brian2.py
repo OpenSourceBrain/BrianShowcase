@@ -21,7 +21,7 @@ import sys
 
 import numpy as np
 
-
+# Use numpy as code generation target (i.e. keep in pure Python)prefs.codegen.target = 'numpy'
 if len(sys.argv) > 1 and sys.argv[1] == '-nogui':
     show_gui = False
 else:
@@ -82,7 +82,7 @@ if show_gui:
 record_of0__v = StateMonitor(RS_pop,'v',record=[0]) # v (Type: OutputColumn)
 record_of0__u = StateMonitor(RS_pop,'u',record=[0]) # u (Type: OutputColumn)
 
-print("Running simulation for %s (dt = %s, # steps = %s)"%(duration,defaultclock.dt, steps))
+print("Running simulation for %s (dt = %s, #steps = %s, code generation target = %s)"%(duration,defaultclock.dt, steps, prefs.codegen.target))
 run(duration)
 
 # Saving to file: RS_One.dat, reference: of0
@@ -92,7 +92,7 @@ file_of0 = open("RS_One.dat", 'w')
 for l in all_of0:
     line = ''
     for c in l: 
-        line = line + (' %f'%c if len(line)>0 else '%f'%c)
+        line = line + (' %s'%c if len(line)>0 else '%s'%c)
     file_of0.write(line+'\n')
 file_of0.close()
 
