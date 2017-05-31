@@ -24,6 +24,7 @@ from math import *
 import sys
 
 import numpy as np
+prefs.codegen.target = 'numpy'
 
 
 if len(sys.argv) > 1 and sys.argv[1] == '-nogui':
