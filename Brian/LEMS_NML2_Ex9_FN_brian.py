@@ -53,17 +53,17 @@ if show_gui:
     trace_d1__V = StateMonitor(fnPop1,'V',record=[0]) # V (Type: Line:  scale=1.0 (dimensionless) timeScale=1.0 (dimensionless))
     trace_d1__W = StateMonitor(fnPop1,'W',record=[0]) # W (Type: Line:  scale=1.0 (dimensionless) timeScale=1.0 (dimensionless))
 
-# Saving to file: results/ex9.dat, reference: of1
+# Saving to file: ex9.dat, reference: of1
 record_of1__V = StateMonitor(fnPop1,'V',record=[0]) # V (Type: OutputColumn)
 record_of1__W = StateMonitor(fnPop1,'W',record=[0]) # W (Type: OutputColumn)
 
 print("Running simulation for %s (dt = %s, #steps = %s)"%(duration,defaultclock.dt, steps))
 run(duration)
 
-# Saving to file: results/ex9.dat, reference: of1
+# Saving to file: ex9.dat, reference: of1
 all_of1 = np.array( [ record_of1__V.times, record_of1__V[0] , record_of1__W[0]  ] )
 all_of1 = all_of1.transpose()
-file_of1 = open("results/ex9.dat", 'w')
+file_of1 = open("ex9.dat", 'w')
 for l in all_of1:
     line = ''
     for c in l: 

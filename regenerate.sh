@@ -11,6 +11,8 @@ jnml LEMS_NML2_Ex9_FN.xml -brian2
 jnml LEMS_2007One.xml -brian2
 jnml LEMS_FiveCells.xml -brian2
 
-cp ../NeuroML2/LEMS_*_brian*py .
+jnml LEMS_NML2_Ex5_DetCell.xml -brian2
+
+cp LEMS_*_brian*py ../Brian
 
 cd ..
