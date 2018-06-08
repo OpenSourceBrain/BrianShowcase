@@ -20,6 +20,7 @@ virtualenv:
 env:
     - OMV_ENGINE=Brian
     - OMV_ENGINE=Brian2
+    - OMV_ENGINE=jNeuroML_validate
     - OMV_ENGINE=jNeuroML
     - OMV_ENGINE=jNeuroML_Brian
     - OMV_ENGINE=jNeuroML_Brian2

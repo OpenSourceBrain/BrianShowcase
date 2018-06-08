@@ -4,31 +4,32 @@ from os.path import abspath, dirname,join
 from neuroml.loaders import NeuroMLLoader
 import matplotlib.pyplot as plt
 
-SAMPLE = "../NeuroML2/pyr_4_sym.cell.nml"
 
 
 def get_nml_file(file):
     return NeuroMLLoader.load(abspath(file))
 
+examples = {"../NeuroML2/pyr_4_sym.cell.nml", "../NeuroML2/L23_NoHotSpot.cell.nml"}
 
-nml_obj = get_nml_file(join(dirname(abspath(__file__)), SAMPLE))
-cell_obj = nml_obj.cells[0]
-morph_obj = cell_obj.morphology
+for example in examples:
+    nml_obj = get_nml_file(join(dirname(abspath(__file__)), example))
+    cell_obj = nml_obj.cells[0]
+    morph_obj = cell_obj.morphology
 
-print("Loaded %s to NeuroML: %s"%(SAMPLE, cell_obj.id))
+    print("Loaded %s to NeuroML: %s"%(example, cell_obj.id))
 
-morphology = load_morphology(join(dirname(abspath(__file__)), SAMPLE))
+    morphology = load_morphology(join(dirname(abspath(__file__)), example))
 
-print("Loaded %s to Brian: %s"%(SAMPLE, cell_obj.id))
+    print("Loaded %s to Brian: %s"%(example, cell_obj.id))
 
-plot_morphology(morphology, show_compartments=True,
-                show_diameter=True, colors=('red',))
-                
-print("Plotted: %s"%(SAMPLE))
-plt.figure()
-plot_dendrogram(morphology)
+    plot_morphology(morphology, plot_3d=False, show_compartments=True,
+                    show_diameter=True, colors=('red',))
 
-print("Plotted dendrogram: %s"%(SAMPLE))
+    print("Plotted: %s"%(example))
+    plt.figure()
+    plot_dendrogram(morphology)
 
-plt.show()
+    print("Plotted dendrogram: %s"%(example))
+
+    plt.show()
 
