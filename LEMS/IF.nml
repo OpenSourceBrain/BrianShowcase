@@ -9,7 +9,7 @@
     <Exposure dimension="voltage" name="v"/>
     <Dynamics>
       <StateVariable dimension="voltage" exposure="v" name="v"/>
-      <TimeDerivative value="(v0 - v) / (10 * ms)" variable="v"/>
+      <TimeDerivative value="(v0 - v) / (100 * ms)" variable="v"/>
       <OnStart/>
       <OnCondition test="v .gt. (10 * mV)">
         <EventOut port="spike"/>
@@ -22,13 +22,21 @@
     <Constant dimension="voltage" name="mVconst" symbol="mVconst" value="1mV"/>
     <Structure>
       <MultiInstantiate componentType="neurongroup" number="N">
-        <Assign property="v0" value="20*mVconst * index /  ( n-1 )  "/>
+        <Assign property="v0" value="20*mVconst * index / ( N-1 )"/>
       </MultiInstantiate>
     </Structure>
   </ComponentType>
   <network id="neurongroupMultiNet">
     <Component N="5" id="neurongroupMultipop" type="neurongroupMulti"/>
   </network>
-  <Simulation id="sim1" length="1s" step="0.1ms" target="neurongroupMultiNet"/>
+  <Simulation id="sim1" length="1s" step="0.1ms" target="neurongroupMultiNet">
+        <Display id="d0" title="example trace" timeScale="1ms" xmin="-100" xmax="1100" ymin="-2" ymax="12">
+            <Line id="v 0" quantity="neurongroupMultipop[0]/v" scale="1mV" timeScale="1ms" color="#ff3300"/>
+            <Line id="v 1" quantity="neurongroupMultipop[1]/v" scale="1mV" timeScale="1ms" color="#ff6633"/>
+            <Line id="v 2" quantity="neurongroupMultipop[2]/v" scale="1mV" timeScale="1ms" color="#ff9966"/>
+            <Line id="v 3" quantity="neurongroupMultipop[3]/v" scale="1mV" timeScale="1ms" color="#ffcc99"/>
+            <Line id="v 4" quantity="neurongroupMultipop[4]/v" scale="1mV" timeScale="1ms" color="#ffffbcc"/>
+        </Display>
+    </Simulation>
   <Target component="sim1"/>
 </Lems>
