@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<Lems xmlns="http://www.neuroml.org/lems/0.7.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/lems/0.7.3 https://raw.githubusercontent.com/LEMS/LEMS/development/Schemas/LEMS/LEMS_v0.7.3.xsd">
+  <Include file="LEMSUnitsConstants.xml"/>
+  <Include file="Simulation.xml"/>
+  <Include file="NeuroML2CoreTypes.xml"/>
+  <ComponentType extends="baseCell" name="neurongroup">
+    <Property dimension="voltage" name="v0"/>
+    <EventPort direction="out" name="spike"/>
+    <Exposure dimension="voltage" name="v"/>
+    <Dynamics>
+      <StateVariable dimension="voltage" exposure="v" name="v"/>
+      <TimeDerivative value="(v0 - v) / (10 * ms)" variable="v"/>
+      <OnStart/>
+      <OnCondition test="v .gt. (10 * mV)">
+        <EventOut port="spike"/>
+        <StateAssignment value="0*mV" variable="v"/>
+      </OnCondition>
+    </Dynamics>
+  </ComponentType>
+  <ComponentType extends="basePopulation" name="neurongroupMulti">
+    <Parameter dimension="none" name="N"/>
+    <Constant dimension="voltage" name="mVconst" symbol="mVconst" value="1mV"/>
+    <Structure>
+      <MultiInstantiate componentType="neurongroup" number="N">
+        <Assign property="v0" value="20*mVconst * index /  ( n-1 )  "/>
+      </MultiInstantiate>
+    </Structure>
+  </ComponentType>
+  <network id="neurongroupMultiNet">
+    <Component N="5" id="neurongroupMultipop" type="neurongroupMulti"/>
+  </network>
+  <Simulation id="sim1" length="1s" step="0.1ms" target="neurongroupMultiNet"/>
+  <Target component="sim1"/>
+</Lems>
