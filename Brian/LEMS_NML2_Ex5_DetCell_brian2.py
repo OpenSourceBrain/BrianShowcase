@@ -34,7 +34,7 @@ else:
 
 defaultclock.dt = 0.01*msecond
 duration = 300.0*msecond
-steps = int(duration/defaultclock.dt)
+steps = int(duration/defaultclock.dt)+1
 
 #    Population hhpop contains components of: Component(id=hhcell type=cell) 
 
@@ -230,7 +230,8 @@ record_of1__h = StateMonitor(hhpop,'bioPhys1_membraneProperties_naChans_naChan_h
 record_of1__n = StateMonitor(hhpop,'bioPhys1_membraneProperties_kChans_kChan_n_q',record=[0]) # n (Type: OutputColumn)
 
 print("Running simulation for %s (dt = %s, #steps = %s, code generation target = %s)"%(duration,defaultclock.dt, steps, prefs.codegen.target))
-run(duration)
+run(duration) # Run a simulation from t=0 to just before t=duration 
+run(defaultclock.dt) # Run one more time step to allow saving the point at t=duration
 
 # Saving to file: ex5_v.dat, reference: of0
 all_of0 = np.array( [ record_of0__v.t, record_of0__v.v[0]  ] )

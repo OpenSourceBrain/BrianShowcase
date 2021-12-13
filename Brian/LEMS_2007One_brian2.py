@@ -31,7 +31,7 @@ else:
 
 defaultclock.dt = 0.0025*msecond
 duration = 520.0*msecond
-steps = int(duration/defaultclock.dt)
+steps = int(duration/defaultclock.dt)+1
 
 #    Population RS_pop contains components of: Component(id=RS type=izhikevich2007Cell) 
 
@@ -83,7 +83,8 @@ record_of0__v = StateMonitor(RS_pop,'v',record=[0]) # v (Type: OutputColumn)
 record_of0__u = StateMonitor(RS_pop,'u',record=[0]) # u (Type: OutputColumn)
 
 print("Running simulation for %s (dt = %s, #steps = %s, code generation target = %s)"%(duration,defaultclock.dt, steps, prefs.codegen.target))
-run(duration)
+run(duration) # Run a simulation from t=0 to just before t=duration 
+run(defaultclock.dt) # Run one more time step to allow saving the point at t=duration
 
 # Saving to file: RS_One.dat, reference: of0
 all_of0 = np.array( [ record_of0__v.t, record_of0__v.v[0] , record_of0__u.u[0]  ] )

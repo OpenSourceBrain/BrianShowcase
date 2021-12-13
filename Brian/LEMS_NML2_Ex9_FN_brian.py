@@ -30,7 +30,7 @@ else:
 
 defaultclock.dt = 10.0*msecond
 duration = 200000.0*msecond
-steps = int(duration/defaultclock.dt)
+steps = int(duration/defaultclock.dt)+1
 
 #    Population fnPop1 contains components of: Component(id=fn1 type=fitzHughNagumoCell) 
 
@@ -58,7 +58,8 @@ record_of1__V = StateMonitor(fnPop1,'V',record=[0]) # V (Type: OutputColumn)
 record_of1__W = StateMonitor(fnPop1,'W',record=[0]) # W (Type: OutputColumn)
 
 print("Running simulation for %s (dt = %s, #steps = %s)"%(duration,defaultclock.dt, steps))
-run(duration)
+run(duration) # Run a simulation from t=0 to just before t=duration 
+run(defaultclock.dt) # Run one more time step to allow saving the point at t=duration
 
 # Saving to file: ex9.dat, reference: of1
 all_of1 = np.array( [ record_of1__V.times, record_of1__V[0] , record_of1__W[0]  ] )

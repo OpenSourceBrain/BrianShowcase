@@ -30,7 +30,7 @@ else:
 
 defaultclock.dt = 5.0*msecond
 duration = 2000000.0*msecond
-steps = int(duration/defaultclock.dt)
+steps = int(duration/defaultclock.dt)+1
 
 #    Population hr_regular_pop contains components of: Component(id=hr_regular type=hindmarshRoseCell) 
 
@@ -84,7 +84,8 @@ record_of0__y = StateMonitor(hr_regular_pop,'y',record=[0]) # y (Type: OutputCol
 record_of0__z = StateMonitor(hr_regular_pop,'z',record=[0]) # z (Type: OutputColumn)
 
 print("Running simulation for %s (dt = %s, #steps = %s)"%(duration,defaultclock.dt, steps))
-run(duration)
+run(duration) # Run a simulation from t=0 to just before t=duration 
+run(defaultclock.dt) # Run one more time step to allow saving the point at t=duration
 
 # Saving to file: hr.dat, reference: of0
 all_of0 = np.array( [ record_of0__x.times, record_of0__x[0] , record_of0__y[0] , record_of0__z[0]  ] )
