@@ -1,0 +1,103 @@
+<Lems xmlns="http://www.neuroml.org/lems/0.6"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.neuroml.org/lems/0.6 https://raw.github.com/LEMS/LEMS/master/Schemas/LEMS/LEMS_v0.6.xsd">
+
+<!--
+
+    Definition in LEMS of the Morris Lecar Model
+    Code originally contributed by Daniel Salles Chevitarese and Yiyin Zhou
+
+    Attempts to reproduce the model as defined at Scholarpedia: http://www.scholarpedia.org/article/Morris-Lecar
+    Note: the Wikipedia formulation of the model differs: http://en.wikipedia.org/wiki/Morris%E2%80%93Lecar_model
+
+    This will be moved to the core set of NeuroML2 definitions when stable!
+
+-->
+
+<ComponentType name="morrisLecarSCell"
+    extends="baseCellMembPotDL"
+    description="The Morris–Lecar model is a biological neuron model developed by Catherine Morris and Harold Lecar to reproduce the variety of oscillatory behavior in relation to Ca++ and K+ conductance in the giant barnacle muscle fiber. Morris-Lecar neurons exhibit both class I and class II neuron excitability. Based on http://www.scholarpedia.org/article/Morris-Lecar">
+    
+    <Parameter name="C" dimension="none" description="Total capacitance of the cell membrane"/>
+    <!-- Have to put C here, because I can't inherit from baseCellMembPot and baseIafCapCell at the same time -->
+    <Parameter name="I" dimension="none"/>
+    <Parameter name="gL" dimension="none"/>
+    <Parameter name="gCa" dimension="none"/>
+    <Parameter name="gK" dimension="none"/>
+    <Parameter name="VL" dimension="none"/>
+    <Parameter name="VCa" dimension="none"/>
+    <Parameter name="VK" dimension="none"/>
+    <Parameter name="V1" dimension="none"/>
+    <Parameter name="V2" dimension="none"/>
+    <Parameter name="V3" dimension="none"/>
+    <Parameter name="V4" dimension="none"/>
+    <Parameter name="T0" dimension="none"/>
+
+    <!-- Needed to ensure V, W & I remain dimensionless... -->
+    <Constant name="MSEC" dimension="time" value="1ms"/>
+
+    <Exposure name="W" dimension="none"/>
+    <Exposure name="Wss" dimension="none"/>
+    <Exposure name="Mss" dimension="none"/>
+    <Exposure name="IL" dimension="none"/>
+    <Exposure name="IK" dimension="none"/>
+    <Exposure name="ICa" dimension="none"/>
+    
+    <Dynamics>
+        
+        <StateVariable name="V" dimension="none" exposure="V"/>
+        <StateVariable name="W" dimension="none" exposure="W"/>
+
+        <!--Note: using exp in these as tanh, cosh not YET supported in LEMS... -->
+        <DerivedVariable name="Mss" dimension="none" exposure="Mss" value="1 / (1 + exp(-2 * (V - V1) / V2))"/>
+        <DerivedVariable name="Wss" dimension="none" exposure="Wss" value="1 / (1 + exp(-2 * (V - V3) / V4))"/>
+
+        <DerivedVariable name="Tw" dimension="none" value="2 / (exp((V - V3) / (2 * V4)) + exp(-(V - V3) / (2 * V4)))"/>
+
+        <DerivedVariable name="IL" dimension="none" exposure="IL" value="gL * (V - VL)"/>
+        <DerivedVariable name="ICa" dimension="none" exposure="ICa" value="gCa * Mss * (V - VCa)"/>
+        <DerivedVariable name="IK" dimension="none" exposure="IK" value="gK * W * (V - VK)"/>
+
+        <TimeDerivative variable="V" value="(I - IL - ICa - IK) / (C * MSEC)"/>
+        <TimeDerivative variable="W" value="T0 * (Wss - W) / (Tw * MSEC)"/>
+        
+
+        <OnStart>
+            <StateAssignment variable="V" value="VL"/>
+            <StateAssignment variable="W" value="Wss"/>
+        </OnStart>
+        
+    </Dynamics>
+    
+</ComponentType>
+
+
+</Lems>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

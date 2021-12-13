@@ -1,0 +1,53 @@
+<Lems>
+
+
+<!-- Specify which component to run -->
+<Target component="sim1"/>
+
+<!-- Include core NeuroML2 ComponentType definitions -->
+<Include file="Cells.xml"/>
+<Include file="Networks.xml"/>
+<Include file="Simulation.xml"/>
+
+
+<!-- Include core NeuroML2 ComponentType definitions -->
+<Include file="MorrisLecarSCell.xml"/>
+
+
+<morrisLecarSCell id="ml1" C="20" I="65" gL="2" gCa="4" gK="8" VL="-50" VCa="100" VK="-70" V1="0" V2="15" V3="10" V4="10" T0="0.1"/>
+
+
+<network id="net1">
+    <population id="ml1pop" component="ml1" size="1"/>
+</network>
+
+<!-- End of NeuroML2 content -->
+        
+
+<Simulation id="sim1" length="220ms" step="0.005ms" target="net1">
+
+    <Display id="d1" title="Fig 6 from Morris and Lecar 1981: membrane potential" timeScale="1ms" xmin="-20" xmax="240" ymin="-60" ymax="30">
+        <Line id ="V" quantity="ml1pop[0]/V" scale="1"  color="#000000" timeScale="1ms"/>
+    </Display>
+    
+    <Display id="d2" title="Currents: IL, IK and ICa" timeScale="1ms" xmin="-20" xmax="240" ymin="-400" ymax="400">
+        <Line id ="IL" quantity="ml1pop[0]/IL" scale="1"  color="#000FFF" timeScale="1ms"/>
+        <Line id ="IK" quantity="ml1pop[0]/IK" scale="1"  color="#FF22FF" timeScale="1ms"/>
+        <Line id ="ICa" quantity="ml1pop[0]/ICa" scale="1"  color="#FF0000" timeScale="1ms"/>
+    </Display>
+    <Display id="d3" title="W and W, M steady state values value" timeScale="1ms" xmin="-20" xmax="240" ymin="-0.1" ymax="1.1">
+        <Line id ="W" quantity="ml1pop[0]/W" scale="1"  color="#4444FF" timeScale="1ms"/>
+        <Line id ="Wss" quantity="ml1pop[0]/Wss" scale="1"  color="#000000" timeScale="1ms"/>
+        <Line id ="Mss" quantity="ml1pop[0]/Mss" scale="1"  color="#ff9966" timeScale="1ms"/>
+    </Display>
+    <Display id="d4" title="Time course of W" timeScale="1ms" xmin="-20" xmax="240" ymin="-0.1" ymax="1.1">
+        <Line id ="Tw" quantity="ml1pop[0]/Tw" scale="1"  color="#000000" timeScale="1ms"/>
+    </Display>
+
+    <OutputFile id="PlotV" fileName="ML_S.dat">
+        <OutputColumn id="V" quantity="ml1pop[0]/V"/>
+    </OutputFile>
+    
+</Simulation>
+
+</Lems>

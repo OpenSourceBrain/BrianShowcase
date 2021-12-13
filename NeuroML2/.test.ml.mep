@@ -1,0 +1,6 @@
+system: Testing ML cell
+
+experiments:
+  Current clamp:
+    expected:
+      spike times: [23.235, 53.53, 83.705, 113.88, 144.055, 174.225, 204.4]
