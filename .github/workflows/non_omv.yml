@@ -25,9 +25,9 @@ jobs:
       run: |
         pip install git+https://github.com/OpenSourceBrain/osb-model-validation
 
-    - name: Install jNeuroML_Brian2
+    - name: Install some simulators
       run: |
-        omv install jNeuroML
+        omv install pyNeuroML
         omv install Brian2
 
     - name: Test regeneration
