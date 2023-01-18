@@ -4,6 +4,6 @@
 
 An Open Source Brain testbed for interactions between [Brian 2](http://briansimulator.org) and NeuroML/LEMS.
 
-See http://www.opensourcebrain.org/projects/brianshowcase for more details.
+See http://www.opensourcebrain.org/projects/brianshowcase for more details, as well as https://docs.neuroml.org/Userdocs/Software/Tools/Brian.html. 
 
 
