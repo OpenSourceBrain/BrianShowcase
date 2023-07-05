@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ 3.7, 3.9 ]
-        engine: [ Brian2, "Brian2:2.5.0.1", jNeuroML_validate, jNeuroML, jNeuroML_Brian2, jNeuroML_NEURON ]
+        python-version: [ 3.8, 3.9, "3.10" ]
+        engine: [ Brian2, "Brian2:2.5.3", jNeuroML_validate, jNeuroML, jNeuroML_Brian2, jNeuroML_NEURON ]
         
 
     steps:
